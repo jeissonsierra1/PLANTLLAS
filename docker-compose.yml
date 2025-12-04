@@ -1,0 +1,28 @@
+
+services:
+  crudsupermercado: #nombre de la app establecido en application.properties
+    build: PruebaTecSupermercado #nombre de la carpeta donde está el DockerFile
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://basedatos:3306/crudsupermercado?createDatabaseIfNotExist=true&serverTimezone=UTC  # misma url que se establecido en application.properties
+      DB_USER_NAME: root # mismo username que se establecido en application.properties
+      DB_PASSWORD:  # misma contraseña que se establecido en application.properties
+    restart: always
+    depends_on:
+      basedatos:    # nombre del servicio de la base de datos
+          condition: service_healthy
+  basedatos: #configuraciones de base de datos dockerizada - nombre del servicio de la base de datos
+    image: mysql:8.0.33 #misma versión que esté en el pom y segun la base de datos que use, se puede desde docker hub buscar la version
+    ports:
+      - "3307:3306" # usual para mysql
+    environment:
+      MYSQL_ROOT_PASSWORD:  # contraseña mysql
+      MYSQL_PASSWORD:       # contraseña mysql
+      MYSQL_DATABASE: crudsupermercado  # nombre base de datos
+    restart: always  # restart siempre que se necesite
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]   # healthcheck de la base de datos mysql- para otra base de datos: encontrar como "docker-compose check if (nombre de la base de datos) 
+      timeout: 10s
+      retries: 10
