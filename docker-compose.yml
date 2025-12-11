@@ -1,25 +1,27 @@
 
 services:
   crudsupermercado: #nombre de la app establecido en application.properties
-    build: PruebaTecSupermercado #nombre de la carpeta donde está el DockerFile
+    build: crudsupermercado #nombre de la carpeta donde está el DockerFile
     mem_limit: 512m
     ports:
       - "8080:8080"
     environment:
+      SERVER_PORT: 8080                                 # van todas las variables de entorno que use en el ide
       DB_URL: jdbc:mysql://basedatos:3306/crudsupermercado?createDatabaseIfNotExist=true&serverTimezone=UTC  # misma url que se establecido en application.properties
-      DB_USER_NAME: root # mismo username que se establecido en application.properties
-      DB_PASSWORD:  # misma contraseña que se establecido en application.properties
+      DB_USERNAME: root # mismo username que se establecido en application.properties
+      DB_PASSWORD: root1234 # misma contraseña que se establecido en application.properties
+      HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
     restart: always
     depends_on:
       basedatos:    # nombre del servicio de la base de datos
           condition: service_healthy
   basedatos: #configuraciones de base de datos dockerizada - nombre del servicio de la base de datos
-    image: mysql:8.0.33 #misma versión que esté en el pom y segun la base de datos que use, se puede desde docker hub buscar la version
+    image: mysql:9.5.0 #misma versión que esté en el pom y segun la base de datos que use, se puede desde docker hub buscar la version
     ports:
       - "3307:3306" # usual para mysql
     environment:
-      MYSQL_ROOT_PASSWORD:  # contraseña mysql
-      MYSQL_PASSWORD:       # contraseña mysql
+      MYSQL_ROOT_PASSWORD: root1234  # contraseña 
+      MYSQL_PASSWORD: root1234      # contraseña 
       MYSQL_DATABASE: crudsupermercado  # nombre base de datos
     restart: always  # restart siempre que se necesite
     healthcheck:
