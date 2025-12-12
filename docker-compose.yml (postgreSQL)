@@ -2,29 +2,29 @@
 # Se crea en este archivo la image de la aplicacion de spring y la image de postgres base de datos
 
 services:
-  crudsupermercado:             
-    build: crudsupermercado 
+  crudsupermercado:      #nombre de la app establecido en application.properties       
+    build: crudsupermercado     #nombre de la carpeta donde está el DockerFile
     mem_limit: 512m
     ports:
-      - "8080:8080"
+      - "8080:8080"                  # Puerto de spring
     environment:
-      SERVER_PORT: 8080
-      DB_URL: jdbc:postgresql://db:5432/crudsupermercado
-      DB_USERNAME: postgres 
-      DB_PASSWORD: Colombia2021*
-      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SERVER_PORT: 8080                  # Puerto de spring
+      DB_URL: jdbc:postgresql://db:5432/crudsupermercado           # url de postrgre
+      DB_USERNAME: postgres                                         # usurio de postrgre
+      DB_PASSWORD: Colombia2021*                                   # clave de postrgre
+      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect    # hibernate de postrgre
     restart: always
     depends_on:
-      db:    
+      db:         # va el mismo host que se uso en la url
           condition: service_healthy
-  db: 
-    image: postgres:17-alpine
+  db:              # va el mismo host que se uso en la url
+    image: postgres:17-alpine               # imagen de docker hub de postrgre
     ports:
-      - "5432:5432" 
+      - "5432:5432"                          # puerto de postgre
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: postgres             
       POSTGRES_PASSWORD: Colombia2021*     
-      POSTGRES_DB: crudsupermercado  
+      POSTGRES_DB: crudsupermercado                 #nombre de la base de datos
     restart: always  
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]  
