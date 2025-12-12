@@ -20,7 +20,7 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL8Dialect
 
 # ============================
-# PORT
+# PORT (Se usa 8080 porque es el puerto que usa spring)
 # ============================
 
 server.port=8080
