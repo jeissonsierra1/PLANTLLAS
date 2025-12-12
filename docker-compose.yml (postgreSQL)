@@ -1,0 +1,32 @@
+
+# Se crea en este archivo la image de la aplicacion de spring y la image de postgres base de datos
+
+services:
+  crudsupermercado:             
+    build: crudsupermercado 
+    mem_limit: 512m
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      DB_URL: jdbc:postgresql://db:5432/crudsupermercado
+      DB_USERNAME: postgres 
+      DB_PASSWORD: Colombia2021*
+      HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+    restart: always
+    depends_on:
+      db:    
+          condition: service_healthy
+  db: 
+    image: postgres:17-alpine
+    ports:
+      - "5432:5432" 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Colombia2021*     
+      POSTGRES_DB: crudsupermercado  
+    restart: always  
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]  
+      timeout: 10s
+      retries: 10
