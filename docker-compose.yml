@@ -1,4 +1,4 @@
-
+# En este archivo se crea la image de la aplicacion de spring y la image de mysql base de datos
 services:
   crudsupermercado: #nombre de la app establecido en application.properties
     build: crudsupermercado #nombre de la carpeta donde está el DockerFile
